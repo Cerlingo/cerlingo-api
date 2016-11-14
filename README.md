@@ -41,7 +41,7 @@ Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Yo
 ##If you have done test, send your answers at this url 
  http://dev.cerlingo.com/api/test_answers?token="Your_token"
  Example
-
+ ```php
         $info['name'] = 'name';
         $info['test_type'] = "Translation";
         $info['test_id'] = 134;
@@ -66,12 +66,12 @@ Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Yo
                 ]
         );
         $answer = curl_exec($this->curl);
-
+```
     
 ##If you have done pre-test, send your answers at this url 
  http://dev.cerlingo.com/api/pretest_check?token="Your_token"
  Example
-
+ ```php
         $info['language_1'] = 'English';
         $info['language_2'] = 'German';
         $info['name'] ='name';
@@ -99,7 +99,7 @@ Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Yo
         );
      
         $answer = curl_exec($this->curl);
-
+```
     
     
     
