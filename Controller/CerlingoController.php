@@ -49,12 +49,8 @@ class CerlingoController extends Controller {
         $list_of_tests['language_1'] = "English";
         $list_of_tests['language_2'] = "German";
         $redirectUrl = $this->_url . "/list_of_tests?token=" . $list_of_tests['token'] . "&language_1=" . $list_of_tests['language_1'] . "&language_2=" . $list_of_tests['language_2'];
-//        $redirectUrl = $this->_url . "/test?token=" . $list_of_tests['token'] . "&language_1=" . $list_of_tests['language_1'] . "&language_2=" . $list_of_tests['language_2'];
-//      
+
         $json = json_decode(file_get_contents($redirectUrl), true);
-
-//        $Translation = $json['Translation']['Translation'];
-
         $config_aoes = ['' => 'Subject Area'] + $json['aoes'];
         $config_tests = ['' => 'Test types'] + $json['tests_type'];
         $config_from_languages = ['' => 'Source Language'] + $json['from_languages'];
@@ -89,21 +85,12 @@ class CerlingoController extends Controller {
         $info['email'] = $request->email;
         $info['date_started'] = Carbon::now()->format("Y-m-d H:i:s");
         $info['date_passed'] = Carbon::now()->format("Y-m-d H:i:s");
-        $i = 0;
-        foreach ($request->all() as $key => $answer) {
-
-            if ($key == 'answer_checked_' . $i) {
-                $answers[] = $answer;
-                $i++;
-            }
+        $pretest_answers = $request->answer_checked;
+   
+        foreach ($pretest_answers as $pretest_answer) {
+           $answers[] = $pretest_answer;
+            //Where $pretest_answer is a questions id; 
         }
-//    
-//        foreach ($pretest_answers as $pretest_answer) {
-//
-//
-//            $answers[] = $pretest_answer;
-//            //Where $pretest_answer is a questions id; 
-//        }
         $info['answers'] = $answers;
       
         $redirectUrl = $this->_url . "/pretest_check?token=" . $this->_apiToken;
@@ -117,7 +104,6 @@ class CerlingoController extends Controller {
      
         $answer = curl_exec($this->curl);
 
-//        return redirect()->to('/home');
     }
 
     public function pretestGetDone(Request $request) {
@@ -153,14 +139,6 @@ class CerlingoController extends Controller {
                 ]
         );
         $answer = curl_exec($this->curl);
-//        if ($answer == true) {
-//            echo "Success";
-//        } else {
-//            echo "Error";
-//        }
-//
-//
-//        return redirect()->to('/home');
     }
 
     public function testGetDone(Request $request) {
