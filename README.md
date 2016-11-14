@@ -37,8 +37,8 @@ Example
         $redirectUrl = $this->_url . "/test?token=" . $detail_of_test['token'] . "&language_1=" . $detail_of_test['language_1'] . "&language_2=" . $detail_of_test['language_2'] . "&aoe=" . $detail_of_test['aoe'] . "&test_type=" . $detail_of_test['test'];
 
 
-If you done test, send your answers at this url 
- http://dev.cerlingo.com/api/test?token="Your_token"
+If you have done test, send your answers at this url 
+ http://dev.cerlingo.com/api/test_answers?token="Your_token"
  Example
     public function testAnswers(Request $request) {
 
@@ -68,4 +68,40 @@ If you done test, send your answers at this url
         $answer = curl_exec($this->curl);
 
     }
+If you have done pre-test, send your answers at this url 
+ http://dev.cerlingo.com/api/pretest_check?token="Your_token"
+ Example
 
+        $info['language_1'] = 'English';
+        $info['language_2'] = 'German';
+        $info['name'] =$request->name;
+        $info['test_id'] = 134;
+        $info['email'] = $request->email;
+        $info['date_started'] = Carbon::now()->format("Y-m-d H:i:s");
+        $info['date_passed'] = Carbon::now()->format("Y-m-d H:i:s");
+        $pretest_answers = $request->answer_checked;
+  
+        foreach ($pretest_answers as $pretest_answer) {
+
+
+            $answers[] = $pretest_answer;
+            //Where $pretest_answer is a questions id; 
+        }
+        $info['answers'] = $answers;
+      
+        $redirectUrl = $this->_url . "/pretest_check?token=" . $this->_apiToken;
+
+        $this->curl = curl_init();
+        curl_setopt_array(
+                $this->curl, [
+            CURLOPT_URL => $redirectUrl . '&' . http_build_query($info),
+                ]
+        );
+     
+        $answer = curl_exec($this->curl);
+
+    }
+    
+    
+    
+    
