@@ -29,7 +29,7 @@ Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Yo
 
 Example 
 
- $detail_of_test['token'] = 'token';
+        $detail_of_test['token'] = 'token';
         $detail_of_test['language_1'] = "from_language_id";
         $detail_of_test['language_2'] ="to_language_id";
         $detail_of_test['aoe'] = "aoe_id";
