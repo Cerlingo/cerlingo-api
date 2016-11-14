@@ -28,15 +28,13 @@ class CerlingoController extends Controller {
         $json = json_decode(file_get_contents($redirectUrl), true);
 
         if (!isset($json['error'])) {
-
-
-
-//        if (isset($json['Translation']['Pretest'])) {
-//           
-//        } else {
-            $Translation = $json['Translation']['Translation'];
-//        }
+            if (isset($json['Translation']['Pretest'])) {
+                $Pretest = $json['Translation']['Pretest'];
+            } else {
+                $Translation = $json['Translation']['Translation'];
+            }
         }
+
         $config_aoes = ['' => 'Subject Area'];
         $config_tests = ['' => 'Test types'];
         $config_from_languages = ['' => 'Source Language'];
@@ -84,32 +82,42 @@ class CerlingoController extends Controller {
 
     public function pretestCheck(Request $request) {
 
-        $info['language_1'] = "language_1";
-        $info['language_2'] = "language_2";
-        $info['name'] = "name";
-        $info['test_type'] = "Translation";
-        $info['test_id'] = "id";
-        $info['email'] = "test@gmail.com";
+        $info['language_1'] = 'English';
+        $info['language_2'] = 'German';
+        $info['name'] =$request->name;
+        $info['test_id'] = 134;
+        $info['email'] = $request->email;
         $info['date_started'] = Carbon::now()->format("Y-m-d H:i:s");
         $info['date_passed'] = Carbon::now()->format("Y-m-d H:i:s");
+        $i = 0;
+        foreach ($request->all() as $key => $answer) {
 
-        foreach ($pretest_answers as $pretest_answer) {
-
-            $answers[] = $pretest_answer;
-            //Where $pretest_answer is a questions id; 
+            if ($key == 'answer_checked_' . $i) {
+                $answers[] = $answer;
+                $i++;
+            }
         }
+//    
+//        foreach ($pretest_answers as $pretest_answer) {
+//
+//
+//            $answers[] = $pretest_answer;
+//            //Where $pretest_answer is a questions id; 
+//        }
         $info['answers'] = $answers;
+      
         $redirectUrl = $this->_url . "/pretest_check?token=" . $this->_apiToken;
 
         $this->curl = curl_init();
         curl_setopt_array(
                 $this->curl, [
-            CURLOPT_URL => $redirectUrl . '&' . http_build_query($questions),
+            CURLOPT_URL => $redirectUrl . '&' . http_build_query($info),
                 ]
         );
+     
         $answer = curl_exec($this->curl);
 
-        return redirect()->to('/home');
+//        return redirect()->to('/home');
     }
 
     public function pretestGetDone(Request $request) {
