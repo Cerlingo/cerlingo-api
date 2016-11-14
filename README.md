@@ -1,3 +1,20 @@
+### Available command options:
+
+Option | Description
+--------- | -------
+`output` | The output path used for the generated documentation. Default: `public/docs`
+`routePrefix` | The route prefix to use for generation - `*` can be used as a wildcard
+`routes` | The route names to use for generation - Required if no routePrefix is provided
+`middleware` | The middlewares to use for generation
+`noResponseCalls` | Disable API response calls
+`noPostmanCollection` | Disable Postman collection creation
+`actAsUserId` | The user ID to use for authenticated API response calls
+`router` | The router to use, when processing the route files (can be Laravel or Dingo - defaults to Laravel)
+`bindings` | List of route bindings that should be replaced when trying to retrieve route results. Syntax format: `binding_one,id|binding_two,id`
+`force` | Force the re-generation of existing/modified API routes
+`header` | Custom HTTP headers to add to the example requests. Separate the header name and value with ":". For example: `--header 'Authorization: CustomToken'`
+
+
 ## cerlingo-api
 Cerlingo_api
 
