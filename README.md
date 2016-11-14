@@ -25,7 +25,7 @@ Send your unique token at this url http://dev.cerlingo.com/api/list_of_tests?tok
 
 
 If you need to get test questions 
-Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Your token&language_1="from_language_id"&language_2=to_language_id&aoe="aoe_id"&test_type="test_id",
+Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Your_token&language_1="from_language_id"&language_2=to_language_id&aoe="aoe_id"&test_type="test_id",
 
 Example 
  $detail_of_test['token'] = $this->_apiToken;
