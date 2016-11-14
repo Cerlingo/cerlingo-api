@@ -2,9 +2,8 @@
 ## cerlingo-api
 Cerlingo_api
 
-Errors
 
-The Cerlingo API uses the following error codes:
+##The Cerlingo API uses the following error codes:
 
 ###Error Code	Meaning
 
@@ -68,7 +67,7 @@ Example
         $answer = curl_exec($this->curl);
 
     
-If you have done pre-test, send your answers at this url 
+##If you have done pre-test, send your answers at this url 
  http://dev.cerlingo.com/api/pretest_check?token="Your_token"
  Example
 
