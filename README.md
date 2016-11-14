@@ -40,15 +40,14 @@ Example
 If you have done test, send your answers at this url 
  http://dev.cerlingo.com/api/test_answers?token="Your_token"
  Example
-    public function testAnswers(Request $request) {
 
-        $info['name'] = $request->name;
+        $info['name'] = 'name';
         $info['test_type'] = "Translation";
         $info['test_id'] = 134;
-        $info['email'] = $request->email;
+        $info['email'] = 'email';
         $info['date_started'] = Carbon::now()->format("Y-m-d H:i:s");
         $info['date_passed'] = Carbon::now()->format("Y-m-d H:i:s");
-        $test_answers = $request->translated_text;
+        $test_answers = 'translated_text';
         foreach ($test_answers as $key => $test_answer) {
 
             $answers[$key] = $test_answer;
@@ -67,19 +66,19 @@ If you have done test, send your answers at this url
         );
         $answer = curl_exec($this->curl);
 
-    }
+    
 If you have done pre-test, send your answers at this url 
  http://dev.cerlingo.com/api/pretest_check?token="Your_token"
  Example
 
         $info['language_1'] = 'English';
         $info['language_2'] = 'German';
-        $info['name'] =$request->name;
+        $info['name'] ='name';
         $info['test_id'] = 134;
-        $info['email'] = $request->email;
+        $info['email'] ='email';
         $info['date_started'] = Carbon::now()->format("Y-m-d H:i:s");
         $info['date_passed'] = Carbon::now()->format("Y-m-d H:i:s");
-        $pretest_answers = $request->answer_checked;
+        $pretest_answers = 'answer_checked';
   
         foreach ($pretest_answers as $pretest_answer) {
 
@@ -100,7 +99,7 @@ If you have done pre-test, send your answers at this url
      
         $answer = curl_exec($this->curl);
 
-    }
+    
     
     
     
