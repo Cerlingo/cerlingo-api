@@ -25,8 +25,10 @@ Send your unique token at this url http://dev.cerlingo.com/api/list_of_tests?tok
 
 
 ##If you need to get test questions 
-Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Your_token&language_1="from_language_id"&language_2=to_language_id&aoe="aoe_id"&test_type="test_id",
-
+Send your detail_of_test at this url 
+```sh
+http://dev.cerlingo.com/api/test?token="Your_token&language_1="from_language_id"&language_2=to_language_id&aoe="aoe_id"&test_type="test_id",
+```
 ##Example 
   ```php
         $detail_of_test['token'] = 'token';
@@ -39,7 +41,9 @@ Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Yo
 ```
 
 ##If you have done test, send your answers at this url 
+```sh
  http://dev.cerlingo.com/api/test_answers?token="Your_token"
+ ```
  Example
  ```php
         $info['name'] = 'name';
@@ -69,7 +73,9 @@ Send your detail_of_test at this url  http://dev.cerlingo.com/api/test?token="Yo
 ```
     
 ##If you have done pre-test, send your answers at this url 
+```sh
  http://dev.cerlingo.com/api/pretest_check?token="Your_token"
+ ```
  Example
  ```php
         $info['language_1'] = 'English';
