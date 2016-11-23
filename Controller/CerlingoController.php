@@ -26,7 +26,7 @@ class CerlingoController extends Controller {
 
         $redirectUrl = $this->_url . "/test?token=" . $list_of_tests['token'] . "&language_1=" . $list_of_tests['language_1'] . "&language_2=" . $list_of_tests['language_2'] . "&aoe=" . $list_of_tests['aoe'] . "&test_type=" . $list_of_tests['test'];
         $json = json_decode(file_get_contents($redirectUrl), true);
-
+           
         if (!isset($json['error'])) {
             if (isset($json['Translation']['Pretest'])) {
                 $Pretest = $json['Translation']['Pretest'];
@@ -49,8 +49,11 @@ class CerlingoController extends Controller {
         $list_of_tests['language_1'] = "English";
         $list_of_tests['language_2'] = "German";
         $redirectUrl = $this->_url . "/list_of_tests?token=" . $list_of_tests['token'] . "&language_1=" . $list_of_tests['language_1'] . "&language_2=" . $list_of_tests['language_2'];
-
+ 
         $json = json_decode(file_get_contents($redirectUrl), true);
+
+
+
         $config_aoes = ['' => 'Subject Area'] + $json['aoes'];
         $config_tests = ['' => 'Test types'] + $json['tests_type'];
         $config_from_languages = ['' => 'Source Language'] + $json['from_languages'];
@@ -78,19 +81,21 @@ class CerlingoController extends Controller {
 
     public function pretestCheck(Request $request) {
 
-        $info['language_1'] = 'English';
-        $info['language_2'] = 'German';
+        $info['language_1'] = 29;
+        $info['language_2'] = 41;
         $info['name'] =$request->name;
         $info['test_id'] = 134;
         $info['email'] = $request->email;
         $info['date_started'] = Carbon::now()->format("Y-m-d H:i:s");
         $info['date_passed'] = Carbon::now()->format("Y-m-d H:i:s");
-        $pretest_answers = $request->answer_checked;
-   
+
+         $pretest_answers =  $request->answer_checked;
+    
         foreach ($pretest_answers as $pretest_answer) {
+        
            $answers[] = $pretest_answer;
-            //Where $pretest_answer is a questions id; 
-        }
+           //Where $pretest_answer is a answers id; 
+       }
         $info['answers'] = $answers;
       
         $redirectUrl = $this->_url . "/pretest_check?token=" . $this->_apiToken;
@@ -139,13 +144,31 @@ class CerlingoController extends Controller {
                 ]
         );
         $answer = curl_exec($this->curl);
+
     }
 
     public function testGetDone(Request $request) {
 
-        $token = $request->get('token');
-        $user_id = $request->get('unique_id');
-        $answer = $request->get('answer');
+          $token = $request->get('token');
+        $name = $request->get('name');
+        $email = $request->get('email');
+        $result = $request->get('result');
+
+        return \response(array(
+        return \response(array(
+            'OK' => "Successful",
+                ), 200);
+//       
+//        $token = $request->get('token');
+//        $name = $request->get('name');
+//        $email = $request->get('email');
+//        $result = $request->get('result');
+//        
+        ////
+        //If something went wrong
+//         return \response(array(
+//            'ERROR' => "Something went wrong",
+//                ), 200);
     }
 
 }
