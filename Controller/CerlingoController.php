@@ -200,94 +200,28 @@ class CerlingoApiMdl
         return $this->areasOfExpertise[$aKey];
     }
 
-    public function getTest($langs, $aoeR = 1) //AoE default is General
+    function getType($typeId)
+    {
+        if($typeId == 2)
+            return "Translation";
+        else if($typeId == 3)
+            return "Comparative Editing";
+    }
+
+    public function getTest($langs, $aoeR = 1, $test_type = '2') //AoE default as General
     {
         $lang1 = !empty($langs['from']) ? "&language_1=" . $this->langConvert($langs['from']) : "";
         $lang2 = !empty($langs['to']) ? "&language_2=" . $this->langConvert($langs['to']) : "";
         $aoe = !empty($aoeR) ? "&aoe=" . $this->areasConvert($aoeR) : "";
-        $testType = $this->areasConvert($aoeR) == 1 ? "&test_type=2" : "&test_type=2";
+        $testType = "&test_type=" . $test_type;
         $redirectUrl = $this->cUrl . "test?token=" . $this->apiToken . $lang1 . $lang2 . $aoe . $testType;
-
-        $resp = json_decode(file_get_contents($redirectUrl));
-
-        return $resp;
-    }
-
-    public function getTestById($tId) // If you know test ID, you can get it by this method.
-    {
-        $redirectUrl = $this->cUrl . "test?token=" . $this->apiToken . "&test_id=" . $tId;
-
-        $resp = json_decode(file_get_contents($redirectUrl));
-
-        return $resp;
-    }
-
-    public function getTestsList() //It returns all the possible tests for account.
-    {
-        $lang1 = !empty($langs['from']) ? "&language_1=" . $this->langConvert($langs['from']) : "";
-        $lang2 = !empty($langs['to']) ? "&language_2=" . $this->langConvert($langs['to']) : "";
-        $aoe = !empty($aoe) ? "&aoe=" . $this->areasConvert($aoe) : "";
-        $redirectUrl = $this->cUrl . "list_of_tests?token=" . $this->apiToken . $lang1 . $lang2 . $aoe; //&language_1=" . $langs['from'] . "&language_2=" . $langs['to'] . "";
-
-        $json = file_get_contents($redirectUrl);
-        $resp = json_decode($json);
-
-        return $resp;
-    }
-
-    /*
-     *   $data['name'] "Test name" /String
-     *   $data['test_id'] Test ID /Int
-     *   $data['email']
-     *   $data['date_started']
-     *   $data['date_passed']
-     *   $data['answers'] /Array, where key is question ID and value is answer ID
-     */
-    public function checkPretest($data)
-    {
-        $redirectUrl = $this->cUrl . "pretest_check?token=" . $this->apiToken;
         $curl = curl_init();
-        $req = $redirectUrl . '&' . http_build_query($data);
         curl_setopt_array(
             $curl, array(
-                CURLOPT_URL => $redirectUrl . '&' . http_build_query($data),
+                CURLOPT_URL => $redirectUrl,
                 CURLOPT_RETURNTRANSFER => 1,
-            )
-        );
-        $resp = curl_exec($curl);
-        curl_close($curl);
-        return json_decode($resp); //array ('result' => 'passed','unique_id'=>""). Can by "passed" or "failed"
-    /*
-     *It returns Array where "unique_id" is unique identifier .You must send the "unique_id" with Translation test answers.
-      *If you have not received unique_id default send 0.
-    */
-    }
-
-
-    /*
-     *   $data['name'] "Test name" /String
-     *   $data['test_id'] Test ID /Int
-     *   $data['unique_id'] 
-     *   $data['test_type'] /String
-     *   $data['email']
-     *   $data['date_started'] date format: "Y-m-d H:i:s" /String
-     *   $data['date_passed'] date format: "Y-m-d H:i:s" /String
-     *   $data['answers'] /Array, where key is question ID and value is translated text
-     */
-
-    /*
-     *It returns Array where "unique_id" is unique identifier of passed test that you will get after the checking of this test with the result of the checking.
-    */  
-    public function checkTest($data)
-    {
-        $redirectUrl = $this->cUrl . "test_answers?token=" . $this->apiToken;
-        $curl = curl_init();
-        $req = $redirectUrl . '&' . http_build_query($data);
-        //var_dump($req);
-        curl_setopt_array(
-            $curl, array(
-                CURLOPT_URL => $redirectUrl . '&' . http_build_query($data),
-                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0
             )
         );
         $resp = curl_exec($curl);
@@ -295,17 +229,88 @@ class CerlingoApiMdl
         return json_decode($resp);
     }
 
-    /*
-     * 
-     */
+    public function getTestById($tId) // If you now test ID -
+    {
+        $redirectUrl = $this->cUrl . "test?token=" . $this->apiToken . "&test_id=" . $tId;
+
+        $resp = @json_decode(file_get_contents($redirectUrl));
+
+        return $resp;
+    }
+
+    public function getTestsList($langs) //It returns all the possible tests for account.
+    {
+
+        $lang1 = !empty($langs['from']) ? "&language_1=" . $this->langConvert($langs['from']) : "";
+        $lang2 = !empty($langs['to']) ? "&language_2=" . $this->langConvert($langs['to']) : "";
+        $aoe = !empty($aoe) ? "&aoe=" . $this->areasConvert($aoe) : "";
+        $redirectUrl = $this->cUrl . "list_of_tests?token=" . $this->apiToken . $lang1 . $lang2 . $aoe; //&language_1=" . $langs['from'] . "&language_2=" . $langs['to'] . "";
+        $curl = curl_init();
+        curl_setopt_array(
+            $curl, array(
+                CURLOPT_URL => $redirectUrl,
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0
+            )
+        );
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($resp);
+    }
+
+    public function checkPretest($data)
+    {
+        $data['language_1'] = $this->langConvert($data['language_1']);
+        $data['language_2'] = $this->langConvert($data['language_2']);
+        $redirectUrl = $this->cUrl . "pretest_check?token=" . $this->apiToken;
+        $curl = curl_init();
+        curl_setopt_array(
+            $curl, array(
+                CURLOPT_URL => $redirectUrl,
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_POST => 1,
+                CURLOPT_POSTFIELDS => http_build_query($data)
+            )
+        );
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($resp);
+    }
+
+    public function checkTest($data)
+    {
+        /*$data['language_1'] = $this->langConvert($data['language_1']);
+        $data['language_2'] = $this->langConvert($data['language_2']);*/
+        $data['token'] = $this->apiToken;
+        $redirectUrl = $this->cUrl . "test_answers";
+        $curl = curl_init();
+        $req = $redirectUrl . '&' . http_build_query($data);
+        curl_setopt_array(
+            $curl, array(
+                CURLOPT_URL => $redirectUrl,
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_POST => 1,
+                CURLOPT_POSTFIELDS => http_build_query($data)
+            )
+        );
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($resp);
+    }
+
     public function testResults($get)
     {
-        $uniqueId = $get['unique_id']; 
-        $result = $get['result']; //Result of test. Can by "passed" or "failed"
+        $uniqueId = $get['unique_id'];
+        $answer = $get['result'];
 
         $resp = array(
-            'unique_id' => $uniqueId,
-            'result' => $result,
+            'uid' => $uniqueId,
+            'result' => $answer,
         );
 
         return $resp;
