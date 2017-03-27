@@ -45,7 +45,7 @@ http://cerlingo.com/api/test?token="Your_token&language_1="from_language_id"&lan
 
 ##If you have done test, send your answers at this url 
 
- http://dev.cerlingo.com/api/test_answers?token="Your_token"
+ http://cerlingo.com/api/test_answers?token="Your_token"
 
  Example
  
@@ -77,7 +77,7 @@ http://cerlingo.com/api/test?token="Your_token&language_1="from_language_id"&lan
     
 ##If you have done pre-test, send your answers at this url 
 
- http://dev.cerlingo.com/api/pretest_check?token="Your_token"
+ http://cerlingo.com/api/pretest_check?token="Your_token"
 
  Example
 
